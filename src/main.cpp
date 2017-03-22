@@ -8,7 +8,7 @@ namespace
 using duration_microsec = std::chrono::duration< double, std::micro >;
 
 constexpr size_t n { 9999999 };
-std::vector<char> test( n );
+std::vector<char> test_vector( n );
 
 template < typename FN >
 inline duration_microsec  measure( FN& fn )
@@ -41,16 +41,16 @@ void run_test()
     };
 
     auto test1 = [&]() {
-        std::for_each( std::begin( test ), std::end( test ), dummpy_fn );
+        std::for_each( std::begin( test_vector ), std::end( test_vector ), dummpy_fn );
     };
-    auto len1 = measure( test1 );
-
     auto test2 = [&]() {
-        for ( auto it = test.begin(); it != test.end(); ++it )
+        for ( auto it = test_vector.begin(); it != test_vector.end(); ++it )
         {
             dummpy_fn( *it );
         }
     };
+
+    auto len1 = measure( test1 );
     auto len2 = measure( test2 );
 
     cout << ( boost::format( "%|3t|%.1f microsec %|30t|%.1f microsec %|60t|%s %%\n" )
